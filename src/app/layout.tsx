@@ -3,21 +3,35 @@ import { Providers } from "./providers";
 import "./index.css";
 
 export const metadata: Metadata = {
-  title: "Lovable App",
-  description: "Lovable Generated Project",
-  authors: [{ name: "Lovable" }],
+  title: "Firsh De Noir – Luxury Perfume Collection",
+  description:
+    "Firsh De Noir is a luxury perfume brand inspired by darkness, elegance, and timeless sophistication.",
+  authors: [{ name: "Firsh De Noir" }],
+
   openGraph: {
-    title: "Lovable App",
-    description: "Lovable Generated Project",
+    title: "Firsh De Noir – Luxury Perfume Collection",
+    description:
+      "Discover Firsh De Noir, a luxury perfume collection crafted for those who embrace elegance, mystery, and bold identity.",
     type: "website",
-    images: ["https://lovable.dev/opengraph-image-p98pqg.png"],
+    images: [
+      {
+        url: "/assets/hero-perfume.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Firsh De Noir – Luxury Perfume Collection",
+      },
+    ],
   },
+
   twitter: {
     card: "summary_large_image",
-    site: "@Lovable",
-    images: ["https://lovable.dev/opengraph-image-p98pqg.png"],
+    title: "Firsh De Noir – Luxury Perfume Collection",
+    description:
+      "Discover Firsh De Noir, a luxury perfume collection crafted for elegance, mystery, and bold identity.",
+    images: ["/assets/hero-perfume.jpg"],
   },
 };
+
 
 export default function RootLayout({
   children,
