@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌑 Firsh de Noir
 
-## Getting Started
+**Firsh de Noir** là một dự án **landing page nước hoa cao cấp**, được xây dựng bằng **Next.js App Router**, tập trung vào hiệu năng, SEO và trải nghiệm thị giác (hero image, gallery, typography).
 
-First, run the development server:
+Repo này phù hợp cho:
+- Landing page marketing
+- Demo Next.js App Router
+- Thực hành `next/image`, assets, layout, component structure
+
+---
+
+## ✨ Tech Stack
+
+- **Next.js 14** (App Router)
+- **React 18**
+- **TypeScript**
+- **Tailwind CSS**
+- **next/image** (tối ưu hình ảnh)
+- **ESM config (`next.config.mjs`)**
+
+---
+
+## 📁 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├─ app/
+│  ├─ layout.tsx        # Root layout
+│  ├─ page.tsx          # Home page
+│  └─ globals.css
+│
+├─ components/
+│  ├─ layout/           # Header, Footer
+│  ├─ sections/         # Hero, Gallery, CTA...
+│  └─ ui/               # UI components
+│
+├─ hooks/               # Custom hooks
+├─ lib/                 # Utils, helpers
+├─ assets/              # (optional) imported assets
+│
+public/
+├─ assets/
+│  └─ perfume-*.jpg     # Static images
+│
+└─ fonts/               # Local fonts (nếu có)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🖼️ Images & Assets
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Ảnh marketing / hero / gallery** được đặt trong:
+  ```
+  public/assets/
+  ```
+- Sử dụng trực tiếp với `next/image`:
+  ```tsx
+  <Image
+    src="/assets/perfume-6.jpg"
+    alt="Perfume"
+    fill
+    className="object-cover"
+    sizes="100vw"
+  />
+  ```
 
-## Learn More
+📌 Không import ảnh từ `public/`.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1️⃣ Clone repo
+```bash
+git clone https://github.com/nguyenlyminhman/firsh-de-noir.git
+cd firsh-de-noir
+```
 
-## Deploy on Vercel
+### 2️⃣ Cài dependencies
+```bash
+npm install
+# hoặc
+pnpm install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3️⃣ Chạy dev server
+```bash
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Mở trình duyệt tại:  
+👉 `http://localhost:3000`
+
+---
+
+## 🧠 Notes & Best Practices
+
+- Component **tái sử dụng** được đặt ngoài `app/`
+- `app/` chỉ dùng cho:
+  - routing
+  - layout
+  - loading / error
+- Hero image dùng `fill` để tránh CLS
+- Alias `@/*` trỏ về `src/*`
+
+---
+
+## 📦 Build & Deploy
+
+```bash
+npm run build
+npm start
+```
+
+Dự án tương thích tốt với:
+- Vercel
+- Docker
+- Static hosting (với cấu hình phù hợp)
+
+---
+
+## 📜 License
+
+MIT License © 2026  
+Made with ❤️ by **Mẫn Nguyễn**
