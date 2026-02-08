@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 45 20% 95%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 45 20% 95%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 45 20% 95%;
+
+    --primary: 43 74% 49%;
+    --primary-foreground: 0 0% 2%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 45 20% 95%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 45 10% 60%;
+
+    --accent: 43 50% 40%;
+    --accent-foreground: 45 20% 95%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 43 20% 20%;
+    --input: 0 0% 15%;
+    --ring: 43 74% 49%;
+
+    --radius: 0.25rem;
+
+    /* Custom tokens */
+    --gold: 43 74% 49%;
+    --gold-light: 43 60% 65%;
+    --cream: 45 30% 90%;
+    --champagne: 35 40% 80%;
+    --burgundy: 345 60% 30%;
+
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', system-ui, sans-serif;
+
+    --gradient-gold: linear-gradient(135deg, hsl(43 74% 49%), hsl(35 60% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 2%), hsl(0 0% 6%));
+    --gradient-hero: linear-gradient(180deg, transparent 0%, hsl(0 0% 2% / 0.8) 100%);
+
+    --shadow-gold: 0 4px 30px hsl(43 74% 49% / 0.15);
+    --shadow-elegant: 0 20px 60px hsl(0 0% 0% / 0.5);
+  }
+
+  .dark {
+    --background: 0 0% 2%;
+    --foreground: 45 20% 95%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-gradient-gold {
+    border-image: var(--gradient-gold) 1;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
