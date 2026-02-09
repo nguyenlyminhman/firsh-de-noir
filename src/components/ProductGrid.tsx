@@ -1,67 +1,10 @@
+"use client";
+
 import { useState } from "react";
-import { Button } from "./ui/button";
+import Link from "next/link";
 import Image from "next/image";
-
-
-interface Perfume {
-  id: number;
-  name: string;
-  category: string;
-  price: string;
-  image: string;
-  description: string;
-}
-
-const perfumes: Perfume[] = [
-  {
-    id: 1,
-    name: "Essence Noir",
-    category: "Eau de Parfum",
-    price: "2.500.000đ",
-    image: "/assets/perfume-1.jpg",
-    description: "Hương thơm huyền bí, quyến rũ với nốt gỗ và hổ phách",
-  },
-  {
-    id: 2,
-    name: "Rose Élégance",
-    category: "Eau de Parfum",
-    price: "3.200.000đ",
-    image: "/assets/perfume-2.jpg",
-    description: "Sự kết hợp hoàn hảo của hoa hồng và pha lê",
-  },
-  {
-    id: 3,
-    name: "Midnight Oud",
-    category: "Parfum",
-    price: "4.800.000đ",
-    image: '/assets/perfume-3.jpg',
-    description: "Đẳng cấp nam tính với trầm hương và da thuộc",
-  },
-  {
-    id: 4,
-    name: "Vintage Amber",
-    category: "Parfum Intense",
-    price: "5.500.000đ",
-    image: "/assets/perfume-4.jpg",
-    description: "Hương thơm cổ điển, sang trọng với hổ phách quý",
-  },
-  {
-    id: 5,
-    name: "Crystal Noir",
-    category: "Eau de Parfum",
-    price: "3.800.000đ",
-    image: "/assets/perfume-5.jpg",
-    description: "Hiện đại và táo bạo với nốt hương đen huyền bí",
-  },
-  {
-    id: 6,
-    name: "Pearl Luxe",
-    category: "Eau de Toilette",
-    price: "2.200.000đ",
-    image: "/assets/perfume-6.jpg",
-    description: "Thanh lịch và tinh tế như viên ngọc trai",
-  },
-];
+import { Button } from "./ui/button";
+import { perfumes, type Perfume, formatPrice } from "@/lib/products";
 
 const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: string) => void }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -73,7 +16,7 @@ const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: s
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden">
+      <Link href={`/products/${perfume.slug}`} className="relative block aspect-[3/4] overflow-hidden">
         <Image
           src={perfume.image}
           alt={perfume.name}
@@ -83,22 +26,22 @@ const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: s
           }`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
-        
-        {/* Quick Actions */}
-        <div
-          className={`absolute bottom-4 left-4 right-4 transition-all duration-300 ${
-            isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
+      </Link>
+      
+      {/* Quick Actions */}
+      <div
+        className={`absolute bottom-4 left-4 right-4 transition-all duration-300 ${
+          isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
+      >
+        <Button
+          variant="gold"
+          size="sm"
+          className="w-full"
+          onClick={() => onOrder(perfume.name)}
         >
-          <Button
-            variant="gold"
-            size="sm"
-            className="w-full"
-            onClick={() => onOrder(perfume.name)}
-          >
-            Đặt hàng
-          </Button>
-        </div>
+          Đặt hàng
+        </Button>
       </div>
 
       {/* Content */}
@@ -110,7 +53,7 @@ const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: s
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
           {perfume.description}
         </p>
-        <p className="text-lg font-serif text-primary">{perfume.price}</p>
+        <p className="text-lg font-serif text-primary">{formatPrice(perfume.price)}</p>
       </div>
     </div>
   );
