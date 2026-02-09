@@ -33,12 +33,12 @@ export function FloatingCart() {
       {/* Floating Cart Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-background shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="fixed bottom-[25px] right-4 sm:bottom-8 sm:right-8 z-40 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-primary text-background shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         aria-label="Mở giỏ hàng"
       >
-        <ShoppingBag size={24} className="stroke-[1.5]" />
+        <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 stroke-[1.5]" />
         {totalQuantity > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-background text-xs font-medium text-primary ring-2 ring-primary">
+          <span className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-background text-[10px] sm:text-xs font-medium text-primary ring-2 ring-primary">
             {totalQuantity > 99 ? "99+" : totalQuantity}
           </span>
         )}
