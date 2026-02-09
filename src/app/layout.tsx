@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Providers } from "./providers"; 
+import { Providers } from "./providers";
+import { ClientLayout } from "./ClientLayout";
 import "./index.css";
 
 export const metadata: Metadata = {
@@ -44,7 +45,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ClientLayout>{children}</ClientLayout>
+        </Providers>
       </body>
     </html>
   );
