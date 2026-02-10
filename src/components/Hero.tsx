@@ -2,8 +2,12 @@
 
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { useLanguage } from "./LanguageContext";
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const isVi = language === "vi";
+
   return (
     <section
       id="hero"
@@ -24,15 +28,19 @@ const Hero = () => {
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className="max-w-3xl mx-auto animate-fade-up">
           <p className="text-primary uppercase tracking-[0.3em] text-sm mb-6 font-sans">
-            Nước hoa cao cấp
+            {isVi ? "Nước hoa cao cấp" : "Luxury perfume"}
           </p>
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light mb-6 leading-tight">
-            Khám Phá
-            <span className="block text-gradient-gold">Hương Thơm</span>
-            Độc Đáo
+            {isVi ? "Khám Phá" : "Discover"}
+            <span className="block text-gradient-gold">
+              {isVi ? "Hương Thơm" : "Unique"}
+            </span>
+            {isVi ? "Độc Đáo" : "Scents"}
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl mb-10 max-w-xl mx-auto font-sans font-light">
-            Bộ sưu tập nước hoa sang trọng, tinh tế từ các thương hiệu nổi tiếng thế giới
+            {isVi
+              ? "Bộ sưu tập nước hoa sang trọng, tinh tế từ các thương hiệu nổi tiếng thế giới"
+              : "A curated collection of sophisticated fragrances from the world's most prestigious brands."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -40,14 +48,14 @@ const Hero = () => {
               size="xl"
               onClick={() => document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Khám phá ngay
+              {isVi ? "Khám phá ngay" : "Explore now"}
             </Button>
             <Button
               variant="elegant"
               size="xl"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Nhận tư vấn
+              {isVi ? "Nhận tư vấn" : "Get consultation"}
             </Button>
           </div>
         </div>

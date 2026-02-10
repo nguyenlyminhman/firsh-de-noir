@@ -14,6 +14,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
+import { useLanguage } from "./LanguageContext";
 
 export function FloatingCart() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,8 @@ export function FloatingCart() {
     decreaseQuantity,
     removeFromCart,
   } = useCart();
+  const { language } = useLanguage();
+  const isVi = language === "vi";
 
   const isEmpty = items.length === 0;
 
@@ -34,7 +37,7 @@ export function FloatingCart() {
       <button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-[25px] right-4 sm:bottom-8 sm:right-8 z-40 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-primary text-background shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        aria-label="Mở giỏ hàng"
+        aria-label={isVi ? "Mở giỏ hàng" : "Open cart"}
       >
         <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 stroke-[1.5]" />
         {totalQuantity > 0 && (
@@ -49,12 +52,16 @@ export function FloatingCart() {
         <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
           <SheetHeader className="border-b border-border pb-6 mb-6">
             <SheetTitle className="font-serif text-2xl text-left">
-              Giỏ hàng
+              {isVi ? "Giỏ hàng" : "Cart"}
             </SheetTitle>
             <SheetDescription className="text-left text-muted-foreground">
               {isEmpty
-                ? "Giỏ hàng của bạn đang trống"
-                : `${totalQuantity} sản phẩm trong giỏ hàng`}
+                ? isVi
+                  ? "Giỏ hàng của bạn đang trống"
+                  : "Your cart is currently empty"
+                : isVi
+                  ? `${totalQuantity} sản phẩm trong giỏ hàng`
+                  : `${totalQuantity} item(s) in your cart`}
             </SheetDescription>
           </SheetHeader>
 
@@ -62,7 +69,9 @@ export function FloatingCart() {
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <ShoppingBag size={48} className="text-muted-foreground mb-4 opacity-50" />
               <p className="text-muted-foreground mb-6">
-                Chưa có sản phẩm nào trong giỏ hàng
+                {isVi
+                  ? "Chưa có sản phẩm nào trong giỏ hàng"
+                  : "There are no products in your cart yet"}
               </p>
               <Button
                 variant="gold-outline"
@@ -71,7 +80,7 @@ export function FloatingCart() {
                   window.location.href = "/#collection";
                 }}
               >
-                Khám phá bộ sưu tập
+                {isVi ? "Khám phá bộ sưu tập" : "Explore collection"}
               </Button>
             </div>
           ) : (
@@ -111,7 +120,9 @@ export function FloatingCart() {
                           <button
                             className="px-2 py-1 text-xs hover:bg-muted transition-colors"
                             onClick={() => decreaseQuantity(item.perfume.id)}
-                            aria-label="Giảm số lượng"
+                            aria-label={
+                              isVi ? "Giảm số lượng" : "Decrease quantity"
+                            }
                           >
                             <Minus size={14} />
                           </button>
@@ -121,7 +132,9 @@ export function FloatingCart() {
                           <button
                             className="px-2 py-1 text-xs hover:bg-muted transition-colors"
                             onClick={() => increaseQuantity(item.perfume.id)}
-                            aria-label="Tăng số lượng"
+                            aria-label={
+                              isVi ? "Tăng số lượng" : "Increase quantity"
+                            }
                           >
                             <Plus size={14} />
                           </button>
@@ -130,9 +143,9 @@ export function FloatingCart() {
                         <button
                           onClick={() => removeFromCart(item.perfume.id)}
                           className="text-xs text-muted-foreground hover:text-destructive transition-colors underline underline-offset-4"
-                          aria-label="Xóa sản phẩm"
+                          aria-label={isVi ? "Xóa sản phẩm" : "Remove product"}
                         >
-                          Xóa
+                          {isVi ? "Xóa" : "Remove"}
                         </button>
                       </div>
                     </div>
@@ -143,7 +156,9 @@ export function FloatingCart() {
               {/* Cart Summary */}
               <div className="border-t border-border pt-6 mt-6 space-y-4">
                 <div className="flex items-center justify-between text-lg">
-                  <span className="text-muted-foreground">Tổng cộng</span>
+                  <span className="text-muted-foreground">
+                    {isVi ? "Tổng cộng" : "Total"}
+                  </span>
                   <span className="font-serif text-xl text-primary">
                     {formatPrice(totalPrice)}
                   </span>
@@ -155,7 +170,9 @@ export function FloatingCart() {
                   className="w-full uppercase tracking-[0.2em]"
                   onClick={() => setIsOpen(false)}
                 >
-                  <Link href="/checkout">Tiến hành đặt hàng</Link>
+                  <Link href="/checkout">
+                    {isVi ? "Tiến hành đặt hàng" : "Proceed to checkout"}
+                  </Link>
                 </Button>
 
                 <Button
@@ -163,7 +180,7 @@ export function FloatingCart() {
                   className="w-full text-sm underline-offset-4 hover:underline"
                   onClick={() => setIsOpen(false)}
                 >
-                  Tiếp tục mua sắm
+                  {isVi ? "Tiếp tục mua sắm" : "Continue shopping"}
                 </Button>
               </div>
             </div>

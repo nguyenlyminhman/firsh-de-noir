@@ -1,4 +1,9 @@
+import { useLanguage } from "./LanguageContext";
+
 const Footer = () => {
+  const { language } = useLanguage();
+  const isVi = language === "vi";
+
   return (
     <footer className="py-12 bg-secondary/30 border-t border-border">
       <div className="container mx-auto px-6">
@@ -14,19 +19,19 @@ const Footer = () => {
               href="#collection"
               className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
             >
-              Bộ sưu tập
+              {isVi ? "Bộ sưu tập" : "Collection"}
             </a>
             <a
               href="#about"
               className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
             >
-              Giới thiệu
+              {isVi ? "Giới thiệu" : "About"}
             </a>
             <a
               href="#contact"
               className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
             >
-              Liên hệ
+              {isVi ? "Liên hệ" : "Contact"}
             </a>
           </nav>
 

@@ -1,47 +1,66 @@
+"use client"
+
+import { useLanguage } from "./LanguageContext";
+
 const About = () => {
+  const { language } = useLanguage();
+  const isVi = language === "vi";
+
   return (
     <section id="about" className="py-24 bg-secondary/30">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-primary uppercase tracking-[0.3em] text-sm mb-4">
-            Về chúng tôi
+            {isVi ? "Về chúng tôi" : "About us"}
           </p>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-8">
-            Nghệ Thuật Của Hương Thơm
+            {isVi ? "Nghệ Thuật Của Hương Thơm" : "The Art of Fragrance"}
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-            Chúng tôi tự hào mang đến cho bạn những chai nước hoa cao cấp nhất, 
-            được tuyển chọn từ các thương hiệu nổi tiếng thế giới. Mỗi mùi hương 
-            là một câu chuyện, một trải nghiệm độc đáo mà bạn xứng đáng được sở hữu.
+            {isVi
+              ? "Chúng tôi tự hào mang đến cho bạn những chai nước hoa cao cấp nhất, được tuyển chọn từ các thương hiệu nổi tiếng thế giới. Mỗi mùi hương là một câu chuyện, một trải nghiệm độc đáo mà bạn xứng đáng được sở hữu."
+              : "We are proud to bring you the finest selection of luxury fragrances from renowned houses around the world. Every scent tells a story – a unique experience you truly deserve."}
           </p>
-          
+
           {/* Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-primary rounded-full flex items-center justify-center">
                 <span className="text-2xl">✨</span>
               </div>
-              <h3 className="font-serif text-xl mb-2">Chính Hãng 100%</h3>
+              <h3 className="font-serif text-xl mb-2">
+                {isVi ? "Chính Hãng 100%" : "100% Authentic"}
+              </h3>
               <p className="text-muted-foreground text-sm">
-                Cam kết sản phẩm chính hãng, nguồn gốc rõ ràng
+                {isVi
+                  ? "Cam kết sản phẩm chính hãng, nguồn gốc rõ ràng"
+                  : "Guaranteed authentic products with verified provenance."}
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-primary rounded-full flex items-center justify-center">
                 <span className="text-2xl">🚚</span>
               </div>
-              <h3 className="font-serif text-xl mb-2">Giao Hàng Toàn Quốc</h3>
+              <h3 className="font-serif text-xl mb-2">
+                {isVi ? "Giao Hàng Toàn Quốc" : "Nationwide Delivery"}
+              </h3>
               <p className="text-muted-foreground text-sm">
-                Đóng gói cẩn thận, giao hàng nhanh chóng
+                {isVi
+                  ? "Đóng gói cẩn thận, giao hàng nhanh chóng"
+                  : "Carefully packaged and shipped quickly across the country."}
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-primary rounded-full flex items-center justify-center">
                 <span className="text-2xl">💬</span>
               </div>
-              <h3 className="font-serif text-xl mb-2">Tư Vấn Miễn Phí</h3>
+              <h3 className="font-serif text-xl mb-2">
+                {isVi ? "Tư Vấn Miễn Phí" : "Complimentary Consulting"}
+              </h3>
               <p className="text-muted-foreground text-sm">
-                Đội ngũ tư vấn chuyên nghiệp, nhiệt tình
+                {isVi
+                  ? "Đội ngũ tư vấn chuyên nghiệp, nhiệt tình"
+                  : "A professional, dedicated team to guide your fragrance journey."}
               </p>
             </div>
           </div>

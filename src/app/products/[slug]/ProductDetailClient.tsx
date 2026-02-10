@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/components/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/components/LanguageContext";
 
 interface ProductDetailClientProps {
   perfume: Perfume;
@@ -19,13 +20,17 @@ export function ProductDetailClient({ perfume }: ProductDetailClientProps) {
   const { addToCart } = useCart();
   const router = useRouter();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const isVi = language === "vi";
 
   const handleAddToCart = () => {
     if (quantity <= 0) return;
     addToCart(perfume, quantity);
     toast({
-      title: "Đã thêm vào giỏ hàng",
-      description: `${perfume.name} x${quantity} đã được thêm vào giỏ hàng của bạn.`,
+      title: isVi ? "Đã thêm vào giỏ hàng" : "Added to cart",
+      description: isVi
+        ? `${perfume.name} x${quantity} đã được thêm vào giỏ hàng của bạn.`
+        : `${perfume.name} x${quantity} has been added to your cart.`,
     });
     router.push("/cart");
   };
@@ -63,7 +68,9 @@ export function ProductDetailClient({ perfume }: ProductDetailClientProps) {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-6">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">Số lượng</span>
+                <span className="text-sm font-medium">
+                  {isVi ? "Số lượng" : "Quantity"}
+                </span>
                 <Input
                   type="number"
                   min={1}
@@ -79,7 +86,7 @@ export function ProductDetailClient({ perfume }: ProductDetailClientProps) {
                 className="flex-1 uppercase tracking-[0.2em]"
                 onClick={handleAddToCart}
               >
-                Thêm vào giỏ hàng
+                {isVi ? "Thêm vào giỏ hàng" : "Add to cart"}
               </Button>
             </div>
 
@@ -88,7 +95,7 @@ export function ProductDetailClient({ perfume }: ProductDetailClientProps) {
               className="px-0 text-sm underline-offset-4 hover:underline"
               onClick={() => router.back()}
             >
-              ← Quay lại bộ sưu tập
+              ← {isVi ? "Quay lại bộ sưu tập" : "Back to collection"}
             </Button>
           </div>
         </div>

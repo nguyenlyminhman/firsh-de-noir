@@ -5,9 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { perfumes, type Perfume, formatPrice } from "@/lib/products";
+import { useLanguage } from "./LanguageContext";
 
 const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: string) => void }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { language } = useLanguage();
+  const isVi = language === "vi";
 
   return (
     <div
@@ -40,7 +43,7 @@ const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: s
           className="w-full"
           onClick={() => onOrder(perfume.name)}
         >
-          Đặt hàng
+          { isVi ? "Đặt hàng" : "Order now"}
         </Button>
       </div>
 
@@ -60,6 +63,9 @@ const ProductCard = ({ perfume, onOrder }: { perfume: Perfume; onOrder: (name: s
 };
 
 const ProductGrid = () => {
+  const { language } = useLanguage();
+  const isVi = language === "vi";
+
   const scrollToContact = (productName: string) => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
@@ -78,13 +84,15 @@ const ProductGrid = () => {
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-up">
           <p className="text-primary uppercase tracking-[0.3em] text-sm mb-4">
-            Bộ sưu tập
+            {isVi ? "Bộ sưu tập" : "Collection"}
           </p>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6">
-            Nước Hoa Cao Cấp
+            {isVi ? "Nước Hoa Cao Cấp" : "Luxury Fragrances"}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Khám phá những mùi hương độc đáo, được tuyển chọn kỹ lưỡng từ những thương hiệu nước hoa hàng đầu thế giới
+            {isVi
+              ? "Khám phá những mùi hương độc đáo, được tuyển chọn kỹ lưỡng từ những thương hiệu nước hoa hàng đầu thế giới"
+              : "Discover unique scents carefully curated from the world's leading perfume houses."}
           </p>
         </div>
 

@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "./LanguageContext";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -20,6 +21,8 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactForm = () => {
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const isVi = language === "vi";
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     phone: "",
@@ -57,13 +60,13 @@ const ContactForm = () => {
 
     try {
       const validated = contactSchema.parse(formData);
-      
+
       // Simulate form submission
       await new Promise((resolve) => setTimeout(resolve, 1000));
       
       toast({
-        title: "Gửi thành công!",
-        description: getPurposeMessage(validated.purpose),
+        title: isVi ? "Gửi thành công!" : "Sent successfully!",
+        description: getPurposeMessage(validated.purpose, isVi),
       });
 
       // Reset form
@@ -91,23 +94,29 @@ const ContactForm = () => {
     }
   };
 
-  const getPurposeMessage = (purpose: string) => {
+  const getPurposeMessage = (purpose: string, vi: boolean) => {
     switch (purpose) {
       case "order":
-        return "Chúng tôi sẽ liên hệ để xác nhận đơn hàng của bạn.";
+        return vi
+          ? "Chúng tôi sẽ liên hệ để xác nhận đơn hàng của bạn."
+          : "We will contact you shortly to confirm your order.";
       case "quote":
-        return "Báo giá sẽ được gửi đến bạn trong thời gian sớm nhất.";
+        return vi
+          ? "Báo giá sẽ được gửi đến bạn trong thời gian sớm nhất."
+          : "A quotation will be sent to you as soon as possible.";
       case "consult":
-        return "Đội ngũ tư vấn sẽ liên hệ với bạn ngay.";
+        return vi
+          ? "Đội ngũ tư vấn sẽ liên hệ với bạn ngay."
+          : "Our consultants will reach out to you shortly.";
       default:
-        return "Cảm ơn bạn đã liên hệ!";
+        return vi ? "Cảm ơn bạn đã liên hệ!" : "Thank you for contacting us!";
     }
   };
 
   const purposeOptions = [
-    { value: "order", label: "Đặt hàng" },
-    { value: "quote", label: "Nhận báo giá" },
-    { value: "consult", label: "Tư vấn" },
+    { value: "order", labelVi: "Đặt hàng", labelEn: "Order" },
+    { value: "quote", labelVi: "Nhận báo giá", labelEn: "Get a quote" },
+    { value: "consult", labelVi: "Tư vấn", labelEn: "Consultation" },
   ];
 
   return (
@@ -117,13 +126,15 @@ const ContactForm = () => {
           {/* Section Header */}
           <div className="text-center mb-12">
             <p className="text-primary uppercase tracking-[0.3em] text-sm mb-4">
-              Liên hệ
+              {isVi ? "Liên hệ" : "Contact"}
             </p>
             <h2 className="font-serif text-4xl md:text-5xl mb-6">
-              Đặt Hàng & Tư Vấn
+              {isVi ? "Đặt Hàng & Tư Vấn" : "Order & Consultation"}
             </h2>
             <p className="text-muted-foreground">
-              Để lại thông tin, chúng tôi sẽ liên hệ với bạn ngay
+              {isVi
+                ? "Để lại thông tin, chúng tôi sẽ liên hệ với bạn ngay"
+                : "Leave your information and we will contact you shortly."}
             </p>
           </div>
 
@@ -142,7 +153,7 @@ const ContactForm = () => {
                       : "border-border text-muted-foreground hover:border-primary hover:text-primary"
                   }`}
                 >
-                  {option.label}
+                  {isVi ? option.labelVi : option.labelEn}
                 </button>
               ))}
             </div>
@@ -152,7 +163,7 @@ const ContactForm = () => {
               <div>
                 <Input
                   name="name"
-                  placeholder="Họ và tên *"
+                  placeholder={isVi ? "Họ và tên *" : "Full name *"}
                   value={formData.name}
                   onChange={handleChange}
                   className="bg-secondary border-border focus:border-primary h-12"
@@ -164,7 +175,7 @@ const ContactForm = () => {
               <div>
                 <Input
                   name="phone"
-                  placeholder="Số điện thoại *"
+                  placeholder={isVi ? "Số điện thoại *" : "Phone number *"}
                   value={formData.phone}
                   onChange={handleChange}
                   className="bg-secondary border-border focus:border-primary h-12"
@@ -180,7 +191,7 @@ const ContactForm = () => {
               <Input
                 name="email"
                 type="email"
-                placeholder="Email (không bắt buộc)"
+                placeholder={isVi ? "Email (không bắt buộc)" : "Email (optional)"}
                 value={formData.email}
                 onChange={handleChange}
                 className="bg-secondary border-border focus:border-primary h-12"
@@ -194,7 +205,7 @@ const ContactForm = () => {
             <div>
               <Input
                 name="product"
-                placeholder="Sản phẩm quan tâm"
+                placeholder={isVi ? "Sản phẩm quan tâm" : "Interested product"}
                 value={formData.product}
                 onChange={handleChange}
                 className="bg-secondary border-border focus:border-primary h-12"
@@ -205,7 +216,7 @@ const ContactForm = () => {
             <div>
               <Textarea
                 name="message"
-                placeholder="Tin nhắn của bạn..."
+                placeholder={isVi ? "Tin nhắn của bạn..." : "Your message..."}
                 value={formData.message}
                 onChange={handleChange}
                 rows={4}
@@ -221,13 +232,21 @@ const ContactForm = () => {
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Đang gửi..." : "Gửi yêu cầu"}
+              {isSubmitting
+                ? isVi
+                  ? "Đang gửi..."
+                  : "Sending..."
+                : isVi
+                  ? "Gửi yêu cầu"
+                  : "Send request"}
             </Button>
           </form>
 
           {/* Contact Info */}
           <div className="mt-12 pt-8 border-t border-border text-center">
-            <p className="text-muted-foreground mb-4">Hoặc liên hệ trực tiếp</p>
+            <p className="text-muted-foreground mb-4">
+              {isVi ? "Hoặc liên hệ trực tiếp" : "Or contact us directly"}
+            </p>
             <div className="flex flex-col md:flex-row justify-center gap-6 text-sm">
               <a
                 href="tel:0901234567"

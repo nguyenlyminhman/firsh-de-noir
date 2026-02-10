@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Button } from "./ui/button";
+import { useLanguage } from "./LanguageContext";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage } = useLanguage();
+  const isVi = language === "vi";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,10 +20,10 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { name: "Trang chủ", href: "/#hero" },
-    { name: "Bộ sưu tập", href: "/#collection" },
-    { name: "Giới thiệu", href: "/#about" },
-    { name: "Liên hệ", href: "/#contact" }
+    { name: isVi ? "Trang chủ" : "Home", href: "/#hero" },
+    { name: isVi ? "Bộ sưu tập" : "Collection", href: "/#collection" },
+    { name: isVi ? "Giới thiệu" : "About", href: "/#about" },
+    { name: isVi ? "Liên hệ" : "Contact", href: "/#contact" },
   ];
 
   return (
@@ -33,90 +35,107 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="font-serif text-2xl md:text-3xl tracking-wider text-primary">
+        {/* Header main */}
+        <div className="relative flex items-center">
+          {/* Logo - Left */}
+          <Link
+            href="/"
+            className="font-serif text-2xl md:text-3xl tracking-wider text-primary flex-shrink-0"
+          >
             LUXE PARFUM
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) =>
-              link.href.startsWith("/#") ? (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors duration-300"
-                >
-                  {link.name}
-                </a>
-              ) : (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors duration-300"
-                >
-                  {link.name}
-                </Link>
-              ),
-            )}
+          {/* Center menu */}
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors duration-300 text-center"
+              >
+                {link.name}
+              </a>
+            ))}
           </nav>
 
-          {/* CTA Button */}
-          <Button
-            variant="gold-outline"
-            size="sm"
-            className="hidden md:inline-flex tracking-widest"
-            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            Đặt hàng ngay
-          </Button>
+          {/* Right actions */}
+          <div className="ml-auto flex items-center gap-4">
+            {/* Language switcher - desktop */}
+            <div className="hidden md:inline-flex items-center gap-1 text-xs font-medium tracking-[0.2em] text-muted-foreground">
+              <button
+                type="button"
+                onClick={() => setLanguage("vi")}
+                className={`transition-colors ${
+                  isVi ? "text-primary" : "hover:text-primary"
+                }`}
+              >
+                VI
+              </button>
+              <span className="opacity-50">/</span>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`transition-colors ${
+                  !isVi ? "text-primary" : "hover:text-primary"
+                }`}
+              >
+                EN
+              </button>
+            </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden text-foreground"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 border-t border-border pt-4 animate-fade-in">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) =>
-                link.href.startsWith("/#") ? (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                ),
-              )}
-              <Button
-                variant="gold-outline"
-                size="sm"
-                className="tracking-widest mt-2"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                Đặt hàng ngay
-              </Button>
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors text-center"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              ))}
+
+              {/* Language switcher - mobile */}
+              <div className="flex items-center justify-center gap-2 text-xs font-medium tracking-[0.2em] text-muted-foreground">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage("vi");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`transition-colors ${
+                    isVi ? "text-primary" : "hover:text-primary"
+                  }`}
+                >
+                  VI
+                </button>
+                <span className="opacity-50">/</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage("en");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`transition-colors ${
+                    !isVi ? "text-primary" : "hover:text-primary"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
             </div>
           </nav>
         )}

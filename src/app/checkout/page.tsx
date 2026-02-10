@@ -8,10 +8,13 @@ import { formatPrice } from "@/lib/products";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, totalPrice, clearCart } = useCart();
+  const { language } = useLanguage();
+  const isVi = language === "vi";
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -38,17 +41,20 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-background pt-28 pb-16">
       <div className="container mx-auto px-6 max-w-5xl">
         <h1 className="font-serif text-3xl md:text-4xl mb-8">
-          Thanh toán & thông tin nhận hàng
+          {isVi ? "Thanh toán & thông tin nhận hàng" : "Checkout & shipping details"}
         </h1>
 
         {isEmpty ? (
           <div className="bg-card border border-dashed border-border rounded-sm p-8 text-center">
             <p className="text-muted-foreground mb-4">
-              Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi
-              thanh toán.
+              {isVi
+                ? "Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi thanh toán."
+                : "Your cart is empty. Please add products before checking out."}
             </p>
             <Button asChild variant="gold-outline">
-              <Link href="/#collection">Quay lại bộ sưu tập</Link>
+              <Link href="/#collection">
+                {isVi ? "Quay lại bộ sưu tập" : "Back to collection"}
+              </Link>
             </Button>
           </div>
         ) : (
@@ -57,11 +63,13 @@ export default function CheckoutPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Họ tên
+                  {isVi ? "Họ tên" : "Full name"}
                 </label>
                 <Input
                   required
-                  placeholder="Nhập họ tên người nhận"
+                  placeholder={
+                    isVi ? "Nhập họ tên người nhận" : "Enter recipient's full name"
+                  }
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
@@ -69,12 +77,12 @@ export default function CheckoutPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Số điện thoại
+                  {isVi ? "Số điện thoại" : "Phone number"}
                 </label>
                 <Input
                   required
                   type="tel"
-                  placeholder="Nhập số điện thoại"
+                  placeholder={isVi ? "Nhập số điện thoại" : "Enter phone number"}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
@@ -82,11 +90,15 @@ export default function CheckoutPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Địa chỉ
+                  {isVi ? "Địa chỉ" : "Address"}
                 </label>
                 <Textarea
                   required
-                  placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
+                  placeholder={
+                    isVi
+                      ? "Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
+                      : "Street, ward/district, city, country"
+                  }
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="min-h-[120px]"
@@ -95,10 +107,14 @@ export default function CheckoutPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Ghi chú (tùy chọn)
+                  {isVi ? "Ghi chú (tùy chọn)" : "Notes (optional)"}
                 </label>
                 <Textarea
-                  placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..."
+                  placeholder={
+                    isVi
+                      ? "Ví dụ: Giao giờ hành chính, gọi trước khi đến..."
+                      : "e.g. Deliver during office hours, call before arrival..."
+                  }
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                 />
@@ -111,7 +127,13 @@ export default function CheckoutPage() {
                 className="w-full uppercase tracking-[0.2em]"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Đang xử lý..." : "Xác nhận đặt hàng"}
+                {isSubmitting
+                  ? isVi
+                    ? "Đang xử lý..."
+                    : "Processing..."
+                  : isVi
+                    ? "Xác nhận đặt hàng"
+                    : "Confirm order"}
               </Button>
 
               <Button
@@ -120,13 +142,15 @@ export default function CheckoutPage() {
                 className="w-full text-sm underline-offset-4 hover:underline"
                 onClick={() => router.push("/cart")}
               >
-                ← Quay lại giỏ hàng
+                ← {isVi ? "Quay lại giỏ hàng" : "Back to cart"}
               </Button>
             </form>
 
             {/* Order summary */}
             <div className="bg-card border border-border rounded-sm p-6 h-fit">
-              <h2 className="font-serif text-xl mb-4">Đơn hàng của bạn</h2>
+              <h2 className="font-serif text-xl mb-4">
+                {isVi ? "Đơn hàng của bạn" : "Your order"}
+              </h2>
 
               <div className="space-y-4 mb-4">
                 {items.map((item) => (
@@ -139,7 +163,7 @@ export default function CheckoutPage() {
                         {item.perfume.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Số lượng: {item.quantity}
+                        {isVi ? "Số lượng" : "Quantity"}: {item.quantity}
                       </p>
                     </div>
                     <p className="text-sm font-medium">
@@ -151,7 +175,7 @@ export default function CheckoutPage() {
 
               <div className="border-t border-border pt-4 mt-2 flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">
-                  Tổng thanh toán
+                  {isVi ? "Tổng thanh toán" : "Total payment"}
                 </span>
                 <span className="text-xl font-serif text-primary">
                   {formatPrice(totalPrice)}

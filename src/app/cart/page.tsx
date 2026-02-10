@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCart } from "@/components/CartContext";
 import { formatPrice } from "@/lib/products";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function CartPage() {
   const {
@@ -13,21 +14,29 @@ export default function CartPage() {
     removeFromCart,
     totalPrice,
   } = useCart();
+  const { language } = useLanguage();
+  const isVi = language === "vi";
 
   const isEmpty = items.length === 0;
 
   return (
     <div className="min-h-screen bg-background pt-28 pb-16">
       <div className="container mx-auto px-6 max-w-5xl">
-        <h1 className="font-serif text-3xl md:text-4xl mb-8">Giỏ hàng</h1>
+        <h1 className="font-serif text-3xl md:text-4xl mb-8">
+          {isVi ? "Giỏ hàng" : "Shopping Cart"}
+        </h1>
 
         {isEmpty ? (
           <div className="bg-card border border-dashed border-border rounded-sm p-8 text-center">
             <p className="text-muted-foreground mb-4">
-              Giỏ hàng của bạn đang trống.
+              {isVi
+                ? "Giỏ hàng của bạn đang trống."
+                : "Your cart is currently empty."}
             </p>
             <Button asChild variant="gold-outline">
-              <Link href="/#collection">Tiếp tục mua sắm</Link>
+              <Link href="/#collection">
+                {isVi ? "Tiếp tục mua sắm" : "Continue shopping"}
+              </Link>
             </Button>
           </div>
         ) : (
@@ -59,6 +68,7 @@ export default function CartPage() {
                       <button
                         className="px-3 py-1 text-sm hover:bg-muted"
                         onClick={() => decreaseQuantity(item.perfume.id)}
+                        aria-label={isVi ? "Giảm số lượng" : "Decrease quantity"}
                       >
                         −
                       </button>
@@ -68,6 +78,7 @@ export default function CartPage() {
                       <button
                         className="px-3 py-1 text-sm hover:bg-muted"
                         onClick={() => increaseQuantity(item.perfume.id)}
+                        aria-label={isVi ? "Tăng số lượng" : "Increase quantity"}
                       >
                         +
                       </button>
@@ -77,7 +88,7 @@ export default function CartPage() {
                       className="text-xs text-muted-foreground hover:text-destructive underline underline-offset-4"
                       onClick={() => removeFromCart(item.perfume.id)}
                     >
-                      Xóa
+                      {isVi ? "Xóa" : "Remove"}
                     </button>
                   </div>
                 </div>
@@ -86,10 +97,12 @@ export default function CartPage() {
 
             {/* Summary */}
             <div className="bg-card border border-border rounded-sm p-6 h-fit">
-              <h2 className="font-serif text-xl mb-4">Tổng kết</h2>
+              <h2 className="font-serif text-xl mb-4">
+                {isVi ? "Tổng kết" : "Summary"}
+              </h2>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-muted-foreground">
-                  Tổng tiền
+                  {isVi ? "Tổng tiền" : "Total"}
                 </span>
                 <span className="text-xl font-serif text-primary">
                   {formatPrice(totalPrice)}
@@ -97,7 +110,9 @@ export default function CartPage() {
               </div>
 
               <Button asChild variant="gold" className="w-full mt-4">
-                <Link href="/checkout">Tiến hành đặt hàng</Link>
+                <Link href="/checkout">
+                  {isVi ? "Tiến hành đặt hàng" : "Proceed to checkout"}
+                </Link>
               </Button>
 
               <Button
@@ -105,7 +120,9 @@ export default function CartPage() {
                 variant="ghost"
                 className="w-full mt-2 text-sm underline-offset-4 hover:underline"
               >
-                <Link href="/#collection">Tiếp tục mua sắm</Link>
+                <Link href="/#collection">
+                  {isVi ? "Tiếp tục mua sắm" : "Continue shopping"}
+                </Link>
               </Button>
             </div>
           </div>
